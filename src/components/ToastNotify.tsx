@@ -1,3 +1,4 @@
+import React from "react";
 import { Flex, Text } from "@mantine/core";
 import { toast } from "react-hot-toast";
 const ToastNotify = (message: string) => {

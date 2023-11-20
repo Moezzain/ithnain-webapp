@@ -7,6 +7,7 @@ import "./index.css";
 
 import RootLayout from "./routes/RootLayout";
 import { Protected } from "./middleware/Protected";
+import { MantineProvider } from "@mantine/core";
 const Users = lazy(() => import("./routes/Users"));
 const UserDetails = lazy(() => import("./routes/UserDetails"));
 const Home = lazy(() => import("./routes/Home"));
@@ -65,7 +66,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <MantineProvider>
+        <RouterProvider router={router} />
+      </MantineProvider>
     </Provider>
   </React.StrictMode>,
 );
