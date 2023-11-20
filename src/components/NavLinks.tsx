@@ -18,8 +18,8 @@ const NavLinks = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-green-500"
-              : "text-gray-400"
+                ? "text-green-500"
+                : "text-gray-400"
           }
         >
           <Text>HOME</Text>
@@ -30,8 +30,8 @@ const NavLinks = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-green-500"
-              : "text-gray-400"
+                ? "text-green-500"
+                : "text-gray-400"
           }
         >
           <Text>CONTACT</Text>
@@ -42,8 +42,8 @@ const NavLinks = () => {
             isPending
               ? "pending"
               : isActive
-              ? "text-green-500"
-              : "text-gray-400"
+                ? "text-green-500"
+                : "text-gray-400"
           }
         >
           <Text>ABOUT</Text>
@@ -55,8 +55,8 @@ const NavLinks = () => {
               isPending
                 ? "pending"
                 : isActive
-                ? "text-green-500"
-                : "text-gray-400"
+                  ? "text-green-500"
+                  : "text-gray-400"
             }
           >
             <Text>USERS</Text>

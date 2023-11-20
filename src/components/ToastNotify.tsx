@@ -18,7 +18,7 @@ const ToastNotify = (message: string) => {
       style: {
         padding: 8,
       },
-    }
+    },
   );
 };
 
