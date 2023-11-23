@@ -1,18 +1,27 @@
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { store } from "./app/store";
+import { persistor, store } from "./app/store";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import "./index.css";
 
 import RootLayout from "./routes/RootLayout";
 import { Protected } from "./middleware/Protected";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, createEmotionCache } from "@mantine/core";
+import rtlPlugin from "stylis-plugin-rtl";
+import OtpPage from "./routes/OtpPage";
+
+const rtlCache = createEmotionCache({
+  key: "mantine-rtl",
+  stylisPlugins: [rtlPlugin],
+});
+
 const Users = lazy(() => import("./routes/Users"));
-const UserDetails = lazy(() => import("./routes/UserDetails"));
 const Home = lazy(() => import("./routes/Home"));
-const Contact = lazy(() => import("./routes/Contact"));
-const About = lazy(() => import("./routes/About"));
+const Invoice = lazy(() => import("./routes/invoice"));
+const SignUp = lazy(() => import("./routes/signUp"));
+const ChoosePlan = lazy(() => import("./routes/choosePlan"));
 const ErrorPage = lazy(() => import("./routes/ErrorPage"));
 
 const router = createBrowserRouter([
@@ -26,36 +35,26 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "contact",
-        element: <Contact />,
-        children: [
-          {
-            path: "number",
-            element: <h1>Contact me on this no: 09234232342342342344</h1>,
-          },
-          {
-            path: "email",
-            element: <h1>Contact me on this account: contactme@gmail.com</h1>,
-          },
-        ],
+        path: "/signup",
+        element: <SignUp />,
       },
       {
-        path: "about",
-        element: <About />,
+        path: "/otp",
+        element: <OtpPage />,
+      },
+      {
+        path: "/invoice",
+        element: <Invoice />,
+      },
+      {
+        path: "/choosePlan",
+        element: <ChoosePlan />,
       },
       {
         path: "users",
         element: (
           <Protected>
             <Users />
-          </Protected>
-        ),
-      },
-      {
-        path: "users/:id",
-        element: (
-          <Protected>
-            <UserDetails />
           </Protected>
         ),
       },
@@ -66,9 +65,21 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <MantineProvider>
-        <RouterProvider router={router} />
-      </MantineProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          emotionCache={rtlCache}
+          theme={{
+            fontFamily: "SSTArabic, sans-serif",
+            fontFamilyMonospace: "SSTArabic, sans-serif",
+            headings: { fontFamily: "SSTArabic, sans-serif" },
+            dir: "rtl",
+          }}
+        >
+          <RouterProvider router={router} />
+        </MantineProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
 );
