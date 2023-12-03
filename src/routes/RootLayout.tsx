@@ -1,11 +1,9 @@
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { Container } from "@mantine/core";
 import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router-dom";
 import { LoadingOverlay } from "@mantine/core";
-import useToggleOverlay from "../app/hookFiles/useToggleOverlay";
 import { useAppSelector } from "../app/hooks";
-// import NavLinks from "../components/NavLinks";
 
 const RootLayout = () => {
   const { loadingPatientExist } = useAppSelector((state) => state.auth);

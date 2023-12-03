@@ -17,6 +17,7 @@ export interface AuthState {
 
 export interface CreatePatientDto {
   name: string;
+  email?: string;
   phone: string;
   referralCode: string | null;
   navigate: any;

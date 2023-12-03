@@ -17,27 +17,6 @@ export class IbApi {
       },
       params: { thirdPartyId: IBconfig.VITE_thirdPartyId },
     });
-
-    // Add a request interceptor (before any request)
-    this.instance.interceptors.request.use((req) => {
-      // const token = store.getState().auth?.token;
-      // console.log('token');
-      // console.log(token);
-      
-      // if (token) {
-        req.headers.Authorization = `Bearer ${IBconfig.VITE_token}`;
-      // }
-      // if (userId && !req.params?.patientId) {
-      //   req.params = {...req.params, patientId: userId};
-      // }
-      if (!req.headers['Content-Type']) {
-        req.headers['Content-Type'] = 'application/json';
-      }
-      req.headers.Accept = 'application/json';
-
-      return req;
-    });
-
   }
 
   /** http methods */
@@ -49,9 +28,13 @@ export class IbApi {
       return this.catchError(error);
     }
   }
-  async post(url: string, body: unknown) {
+  async post(url: string, body: unknown, headers?: any) {
     try {
-      const response: AxiosResponse = await this.instance.post(url, body);
+      const response: AxiosResponse = await this.instance.post(
+        url,
+        body,
+        headers,
+      );
       return this.responseBody(response);
     } catch (error) {
       return this.catchError(error);

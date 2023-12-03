@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IbApi } from "../../network";
 import { AuthState, CreatePatientDto } from "../../interfaces/auth.interface";
-import useToggleOverlay from "../../app/hookFiles/useToggleOverlay";
-import { useNavigate } from "react-router-dom";
 import { RootState } from "../../app/store";
 
 const api = new IbApi();
@@ -27,7 +25,7 @@ const initialState: AuthState = {
 export const isPatientExistAction = createAsyncThunk(
   "auth/isExist",
   async (
-    { name, phone, navigate }: { name: string; phone: string; navigate: any },
+    { name, email, phone, navigate }: { name: string; email?: string; phone: string; navigate: any },
     { dispatch, rejectWithValue },
   ) => {
     try {
@@ -44,11 +42,12 @@ export const isPatientExistAction = createAsyncThunk(
 
         if (response?.data.patient) {
           console.log("inside3");
-
-          // sendOtp and go to otp page
-          dispatch(verifyPhoneAction({ name, phone }));
-          navigate(`/otp`, { state: { signUp: false } });
-          return response?.data.patient;
+          if (name || email) {
+            // sendOtp and go to otp page
+            dispatch(verifyPhoneAction({ name, phone }));
+            navigate(`/otp`, { state: { signUp: false } });
+          }
+          return {...response?.data.patient, email};
         } else if (response?.data.error) {
           // send otp with paramter sign up
           console.log("inside2");
@@ -73,10 +72,7 @@ export const isPatientExistAction = createAsyncThunk(
 
 export const verifyPhoneAction = createAsyncThunk(
   "auth/verifyPhone",
-  async (
-    { name, phone }: { name: string; phone: string },
-    { rejectWithValue },
-  ) => {
+  async ({ phone }: { name: string; phone: string }, { rejectWithValue }) => {
     try {
       const response = await api.post("/verifyPhone", { phoneNumber: phone });
       if (!response) {
@@ -96,11 +92,11 @@ export const verifyPhoneAction = createAsyncThunk(
 export const createPatientAction = createAsyncThunk(
   "patient/createPatientAction",
   async (
-    { name, phone, referralCode, navigate }: CreatePatientDto,
+    { name, email, phone, referralCode, navigate }: CreatePatientDto,
     { rejectWithValue, dispatch },
   ) => {
     const response = await api.post("/patient", {
-      name,
+      name: email? email: name,
       phone,
       referralCode,
       referralMedium: "Web Portal",
@@ -115,23 +111,28 @@ export const createPatientAction = createAsyncThunk(
       const patient = JSON.parse(unparsedPatient);
       dispatch(setUserIdAction(patient.id));
       dispatch(setTokenAction(patient.token));
-      navigate("/choosePlan");
-      return { patient, isExisting };
+      if(!email || email === '')
+        navigate("/choosePlan");
+      else navigate("/chooseDoctorPlan");
+      return { patient: {...patient, email}, isExisting };
     }
     return rejectWithValue(response?.data?.statusText);
   },
 );
 
 export const setSignUpStatusAction = createAsyncThunk(
-  'auth/setSignUpStatus',
+  "auth/setSignUpStatus",
   async (signUpStatus: string, thunkApi) => {
     try {
-      console.log('insideee logg');
+      console.log("insideee logg");
       const { auth } = thunkApi.getState() as RootState;
-      console.log('signUpStatus');
+      console.log("signUpStatus");
       console.log(signUpStatus);
-      const response = await api.patch('/patient', {patientId: auth.patient.patientId, signUpStatus});
-      console.log('response');
+      const response = await api.patch("/patient", {
+        patientId: auth.patient.id,
+        signUpStatus,
+      });
+      console.log("response");
       console.log(response);
       if (response?.status === 201) {
         return signUpStatus;

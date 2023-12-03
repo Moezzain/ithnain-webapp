@@ -1,37 +1,23 @@
-import { lazy /*Suspense*/ } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-// import ToastNotify from "../components/ToastNotify";
 import { useEffect } from "react";
-import { getInvoiceAction, verifyPaymentAction } from "../features/invoice/invoiceSlice";
+import { getInvoiceAction } from "../features/invoice/invoiceSlice";
 import { Container, Button, Space, Divider } from "@mantine/core";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import companyLogo from "../assets/images/logo-dark-notext.png";
-import onBoardingImage from "../assets/images/OnboardingImage.png";
 import { useNavigate } from "react-router-dom";
-import { converter } from "../features/invoice/html_invoice_template";
 
 const Invoice = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { patient, verificationCode } = useAppSelector((state) => state.auth);
   const { invoice } = useAppSelector((state) => state.invoice);
+  const { patient } = useAppSelector((state) => state.auth);
 
-  /*  invoice.intensity.intensityTitle
-
-          paymentId: invoiceLocal.paymentId ? invoiceLocal.paymentId : invoiceLocal.id,
-          invoiceDate,
-          invoice,
-          amountWithoutDiscount,
-          invoiceID
-
-  */
   useEffect(() => {
-      dispatch(getInvoiceAction({id: invoice.id}));
+    dispatch(getInvoiceAction({ id: invoice.id }));
   }, []);
 
   const printDocumentTransfer = () => {
-    // return new Promise((resolve, reject) => {
     // create html
     const ttt = document.getElementById("content");
     html2canvas(ttt as HTMLDivElement, {
@@ -41,11 +27,11 @@ const Invoice = () => {
       .then(async (canvas: HTMLCanvasElement) => {
         const imgData = canvas.toDataURL("image/png");
 
-        var imgWidth = 210;
-        var imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        var pdf = new jsPDF("p", "mm");
-        var position = 0;
+        const pdf = new jsPDF("p", "mm");
+        const position = 0;
 
         pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
 
@@ -53,6 +39,16 @@ const Invoice = () => {
       })
       .catch((error) => console.log(error));
   };
+  
+  const done = () => {
+    if(!patient.email || patient.email === '') {
+      navigate("/");
+    }
+    else {
+      // hubspot link
+    }
+  }
+
   return (
     <>
       <Container
@@ -65,13 +61,18 @@ const Invoice = () => {
           id="content"
           className="flex justify-center flex-col items-start p-2"
         >
-          <img src={companyLogo} alt="company logo" className="w-24" />
+          <img
+            src={companyLogo}
+            alt="company logo"
+            className="w-24"
+            loading="lazy"
+          />
           <div className="flex justify-center flex-col items-center my-2 w-full">
             <h5 className="w-full">
               {" "}
               <b>رقم الفاتورة:</b> {invoice.paymentId}
               <Space h="xs" />
-              <b>تاريخ الفاتورة:</b> {invoice.updatedOn.substr(0,10)}
+              <b>تاريخ الفاتورة:</b> {invoice.updatedOn?.substr(0, 10)}
               <Space h="lg" />
               <Divider variant="dashed" size="xs" />
             </h5>
@@ -102,18 +103,20 @@ const Invoice = () => {
               </tr>
               <tr className="border-b-2 h-11">
                 <td colSpan={2}>{invoice.intensity.intensityTitle}</td>
-                <td className="text-center"  colSpan={2}>{invoice.intensity.numberOfSessions}</td>
+                <td className="text-center" colSpan={2}>
+                  {invoice.intensity.numberOfSessions}
+                </td>
                 <td className="text-left" colSpan={2}>
                   {" "}
-                  {invoice.intensity.price}{" "}
+                  {invoice.intensity.price} ريال{" "}
                 </td>
               </tr>
               <Space h="lg" />
 
               <tr className="border-b-2 h-11">
-                <td colSpan={3}>القيمة المضافة</td>
+                <td colSpan={3}> 15% القيمة المضافة</td>
                 <td className="text-left" colSpan={3}>
-                  {((Number(invoice?.intensity?.price)) * 0.15).toFixed(2) }
+                  {(Number(invoice?.intensity?.price) * 0.15).toFixed(2)} ريال
                 </td>
               </tr>
               <Space h="md" />
@@ -121,7 +124,7 @@ const Invoice = () => {
               <tr className="w-full">
                 <td colSpan={3}>المجموع</td>
                 <td className="text-left" colSpan={3}>
-                  {(Number(invoice?.intensity?.price) * 1.15).toFixed(2)}
+                  {(Number(invoice?.intensity?.price) * 1.15).toFixed(2)} ريال
                 </td>
               </tr>
             </table>
@@ -146,18 +149,18 @@ const Invoice = () => {
           تحميل الايصال
         </Button>{" "}
         <Button
-          onClick={() => navigate('/')}
+          onClick={done}
           variant="subtle"
           styles={(theme) => ({
             root: {
               backgroundColor: "#042C43",
               borderColor: "#042C43",
-              width: '100%',
+              width: "100%",
               color: "white",
               margin: "15px",
               borderRadius: 17,
               "&:not([data-disabled])": theme.fn.hover({
-                  backgroundColor: "#042C43",
+                backgroundColor: "#042C43",
               }),
             },
           })}

@@ -9,7 +9,6 @@ import {
 import { setSignUpStatusAction } from "../auth/authSlice";
 
 const api = new IbApi();
-const educatorId = "";
 
 const initialState: InvoiceState = {
   id: "",
@@ -22,19 +21,24 @@ const initialState: InvoiceState = {
 
 export const createInvoiceAction = createAsyncThunk(
   "plan/createInvoice",
-  async ({ intensityId, description }: CreateInvoiceDto, thunkApi) => {
+  async (
+    { intensityId, description, patientEmail }: CreateInvoiceDto,
+    thunkApi,
+  ) => {
     try {
       const { auth } = thunkApi.getState() as RootState;
+      const IBconfig = import.meta.env;
       console.log("auth");
-      console.log(auth.patient.patientId);
+      console.log(auth.patient.id);
 
       const response = await api.post(`/invoices`, {
-        patientId: auth.patient.patientId,
+        patientId: auth.patient.id,
         topics: [{ id: "DEFAULT" }],
         description,
         intensityId,
         originFromPatient: true,
-        returnUrl: "http://127.0.0.1:5173",
+        returnUrl: IBconfig.VITE_returnUrl,
+        patientEmail: patientEmail ? patientEmail : null,
       });
       if (!response) {
         return thunkApi.rejectWithValue("Server error");
@@ -42,7 +46,7 @@ export const createInvoiceAction = createAsyncThunk(
       if (response?.status === 201) {
         console.log("response createInvoiceAction \n");
         console.log(response);
-        let invoice = JSON.parse(response.data.invoice);
+        const invoice = JSON.parse(response.data.invoice);
         // send get URL by dispatching invoice details to getInvoiceUrlAction
         thunkApi.dispatch(setInvoiceIdAction(invoice.id));
         thunkApi.dispatch(setInvoiceUrlAction(response.data.invoiceUrl));
@@ -65,20 +69,17 @@ export const getInvoiceAction = createAsyncThunk(
   async ({ id }: { id: string }, thunkApi) => {
     try {
       const { auth } = thunkApi.getState() as RootState;
-
-      const get = "URL";
       const response = await api.get(
-        `/invoices?get=invoice&invoiceId=${id}&patientId=${auth.patient.patientId}`,
+        `/invoices?get=invoice&invoiceId=${id}&patientId=${auth.patient.id}`,
       );
       if (!response) {
         return thunkApi.rejectWithValue("Server error");
       }
       if (response.data?.error) {
         return thunkApi.rejectWithValue(response.data.error);
-      } else
-        if (response.data?.status === 'successful') {
+      } else if (response.data?.status === "successful") {
         //forward patient to url page response.data.invoiceUrl
-        thunkApi.dispatch(setSignUpStatusAction('needCoach'));
+        thunkApi.dispatch(setSignUpStatusAction("needCoach"));
         return response.data;
       }
     } catch (error: any) {
@@ -93,7 +94,15 @@ export const getInvoiceAction = createAsyncThunk(
 export const verifyPaymentAction = createAsyncThunk(
   "invoice/verifyPaymentAction",
   async (
-    { tranRef, order_reference_id, order_id, ref, toggleModalSuccess, toggleModalFailed, navigate }: verifyInvoiceDto,
+    {
+      tranRef,
+      order_reference_id,
+      order_id,
+      ref,
+      toggleModalSuccess,
+      toggleModalFailed,
+      navigate,
+    }: verifyInvoiceDto,
     thunkApi,
   ) => {
     try {
@@ -115,8 +124,7 @@ export const verifyPaymentAction = createAsyncThunk(
           setTimeout(() => {
             navigate("/invoice");
           }, 1500);
-        }
-        else toggleModalFailed();
+        } else toggleModalFailed();
         //add invoice again after to refresh
         return response.data;
       }

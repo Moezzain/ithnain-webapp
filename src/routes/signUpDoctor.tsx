@@ -17,41 +17,32 @@ import { useAppDispatch } from "../app/hooks";
 import { isPatientExistAction } from "../features/auth/authSlice";
 import { convertArabicNumerals } from "../app/helpers";
 
-const SignUp = () => {
+const SignUpDoctor = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
 
   const form = useForm({
     initialValues: {
-      name: "",
+      email: "",
       phone: "",
       termsOfService: false,
     },
     validate: {
-      name: (value) => (/^(?!\s*$).+/.test(value) ? null : "أدخل اسم صحيح"),
+      email: (value) => (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? null : "أدخل أيميل صحيح"),
       phone: (value) =>
         /^[\u0660-\u0669]|[0-9]{9}$/.test(value) ? null : "أدخل رقم هاتف صحيح",
-
-      // phone: (value) => {
-      //   if(!(/^\d{9}$/.test(value))) {
-      //     return "أدخل رقم هاتف صحيح";
-      //   }
-      //   if(!(/^[\u0660-\u0669]{9}$/.test(value))) {
-      //     return "أدخل رقم هاتف صحيح";
-      //   }
-      //   return null;
-      // },
       termsOfService: (value) => (value ? null : "وافق على الاحكام و الشروط"),
     },
   });
 
-  const onSubmit = (values: { name: string; phone: string }) => {
+  const onSubmit = (values: { email: string; phone: string }) => {
     // check exist or not
     console.log("convertArabicNumerals(values.phone)");
     console.log(convertArabicNumerals(values.phone));
     dispatch(
       isPatientExistAction({
+        name: '',
         ...values,
         navigate,
         phone: convertArabicNumerals(values.phone),
@@ -80,10 +71,10 @@ const SignUp = () => {
           <img src={companyLogo} alt="company logo" className="w-32" />
           <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
             <TextInput
-              label="الأسم"
+              label="الأيميل"
               mt="md"
-              placeholder="الأسم"
-              {...form.getInputProps("name")}
+              placeholder="الأيميل"
+              {...form.getInputProps("email")}
             />
             <TextInput
               withAsterisk
@@ -122,4 +113,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpDoctor;

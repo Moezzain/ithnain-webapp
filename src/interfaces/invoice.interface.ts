@@ -10,6 +10,7 @@ export interface InvoiceState {
 export interface CreateInvoiceDto {
   intensityId: string;
   description: string;
+  patientEmail?: string;
 }
 
 export interface verifyInvoiceDto {

@@ -13,16 +13,16 @@ const plans = [
     intensityId: "6be7094b-e4eb-436c-a837-4f5c38013869",
     description: "من الموقع",
     name: "السبع جلسات",
-    amount: "350",
+    amount: "280",
   },
   {
     intensityId: "2f397364-ca4e-4a7b-8511-3b2e816d0a9e",
     description: "من الموقع",
     name: "الأثنا عشر جلسة",
-    amount: "550",
+    amount: "480",
   },
 ];
-const ChoosePlan = () => {
+const ChoosePlanDoctor = () => {
   const dispatch = useAppDispatch();
   const { patient } = useAppSelector((state) => state.auth);
   const [insulin, setInsulin] = useState("");
@@ -67,29 +67,29 @@ const ChoosePlan = () => {
           <p className="text-base mb-4">
             لتحديد خطتك داخل التطبيق جاوب على السؤال:
           </p>
-          <p className="text-base">هل تتعالج بالانسولين؟</p>
+          <p className="text-base">هل أنت مصاب بالسكري النوع الاول او الثاني؟</p>
           <Radio.Group
             value={insulin}
             onChange={chooseInsuline}
             name="favoriteFramework"
           >
-            <Radio value="Yes" label="نعم" />
-            <Radio value="No" label="لا" />
+            <Radio value="Yes" label="الأول" />
+            <Radio value="No" label="الثاني" />
           </Radio.Group>
 
           {insulin !== "" && (
             <div className="flex justify-start flex-col items-center w-full">
-              {insulin === "Yes" ? (
+              {insulin === "No" ? (
                 <>
-                  {/* <p className="text-base mb-4">خطة {plans[1].name} بقيمة:</p>
+                  <p className="text-base mb-4">خطة {plans[1].name} بقيمة:</p>
                   <p className="text-base mb-4 text-blue-950">
-                    {plans[1].amount} ريال ( غير شامل الضريبة )
-                  </p> */}
-                  <img
+                    {plans[1].amount} ريال
+                  </p>
+                  {/* <img
                     src={IntensivePlan}
                     alt="Intensive Plan"
                     className=" w-80 mb-5"
-                  />
+                  /> */}
 
                   <Button
                     onClick={() =>
@@ -123,11 +123,11 @@ const ChoosePlan = () => {
                 </>
               ) : (
                 <>
-                  <img src={MainPlan} alt="Main Plan" className=" w-80 mb-5" />
-                  {/* <p className="text-base mb-4">خطة {plans[0].name} بقيمة:</p>
+                  {/* <img src={MainPlan} alt="Main Plan" className=" w-80 mb-5" /> */}
+                  <p className="text-base mb-4">خطة {plans[0].name} بقيمة:</p>
                   <p className="text-base mb-4 text-blue-950">
-                    {plans[0].amount} ريال ( غير شامل الضريبة )
-                  </p> */}
+                    {plans[0].amount} ريال
+                  </p>
                   <Button
                     onClick={() =>
                       dispatch(
@@ -167,4 +167,4 @@ const ChoosePlan = () => {
   );
 };
 
-export default ChoosePlan;
+export default ChoosePlanDoctor;

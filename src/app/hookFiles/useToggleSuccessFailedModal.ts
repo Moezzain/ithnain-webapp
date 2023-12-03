@@ -11,7 +11,12 @@ const useToggleSuccessFailedModal = () => {
     setVisibleFailed(!visibleFailed);
   }, [visibleFailed]);
 
-  return [visibleSuccess, visibleFailed, toggleModalSuccess, toggleModalFailed];
+  return [
+    visibleSuccess,
+    visibleFailed,
+    toggleModalSuccess as any,
+    toggleModalFailed as any,
+  ];
 };
 
 export default useToggleSuccessFailedModal;

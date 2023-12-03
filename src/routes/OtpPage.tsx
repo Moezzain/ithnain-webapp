@@ -7,6 +7,7 @@ import {
   createPatientAction,
   verifyPhoneAction,
 } from "../features/auth/authSlice";
+import { convertArabicNumerals } from "../app/helpers";
 
 function OtpPage() {
   const dispatch = useAppDispatch();
@@ -16,7 +17,6 @@ function OtpPage() {
   const [seconds, setSeconds] = useState("58");
   const [incorrectCode, setIncorrectCode] = useState(false);
   const [startedCountdown, setStartedCountdown] = useState(false);
-  const [minutes, setMinutes] = useState("00");
   const [updateTime, setUpdateTime] = useState(true);
   const [showResendCode, setShowResendCode] = useState(false);
   const timer = useRef(null) as any;
@@ -28,21 +28,24 @@ function OtpPage() {
     };
   }, []);
 
-  console.log("params");
-  console.log(state);
-
   const finishEnterCode = (value: string) => {
-    if (value === verificationCode) {
+    if (convertArabicNumerals(value) === verificationCode) {
       setIncorrectCode(false);
       if (!state.signUp) {
         // forward to plans page
-        navigate("/choosePlan");
+        if(!patient.email) {
+          navigate("/choosePlan");
+        }
+        else {
+          navigate("/chooseDoctorPlan");
+        }
       } else {
         // create patient then forward to plans page
         dispatch(
           createPatientAction({
             name: patient.patientName,
             phone: patient.patientPhone,
+            email: patient.email,
             referralCode: null,
             navigate,
           }),
@@ -82,7 +85,7 @@ function OtpPage() {
     timer.current = null;
     timer.current = setInterval(() => {
       const now: any = new Date().getTime();
-      let distance: any = countDown - now;
+      const distance: any = countDown - now;
       currentMinutes = Math.floor((distance % hour) / minute);
       currentSeconds = Math.floor((distance % minute) / second);
       console.log("currentSeconds");
@@ -133,7 +136,7 @@ function OtpPage() {
       <div dir="ltr">
         <PinInput
           onComplete={finishEnterCode}
-          type={/^[0-9]*$/}
+          type={/^[0-9]|[\u0660-\u0669]*$/}
           inputType="tel"
           inputMode="numeric"
         />

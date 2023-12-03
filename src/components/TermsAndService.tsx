@@ -1,4 +1,4 @@
-import { Modal, Group, Button } from "@mantine/core";
+import { Modal } from "@mantine/core";
 
 const terms = [
   "يضمن فريق إثنين الخصوصية التامة للمريض وعدم الإطلاع على أي تفاصيل شخصية لأي حالة من قبل أي شخص خارج إثنين",
@@ -20,7 +20,6 @@ const terms = [
 
 function TermsAndService({
   opened,
-  open,
   close,
 }: {
   opened: boolean;
@@ -38,10 +37,6 @@ function TermsAndService({
           ))}
         </ul>
       </Modal>
-
-      {/* <Group position="center">
-          <Button onClick={open}>Open modal</Button>
-        </Group> */}
     </>
   );
 }

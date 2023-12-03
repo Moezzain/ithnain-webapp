@@ -4,7 +4,7 @@ export function convertArabicNumerals(number: string) {
   }
   const numbers = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
   let finalNumber = "";
-  for (var i = 0; i < number.length; i++) {
+  for (let i = 0; i < number.length; i++) {
     const digit = numbers.indexOf(number[i]);
     if (digit != -1) {
       finalNumber += digit;

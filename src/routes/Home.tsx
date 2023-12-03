@@ -1,49 +1,26 @@
-import { lazy /*Suspense*/ } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-// import ToastNotify from "../components/ToastNotify";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { useEffect } from "react";
-import { verifyPaymentAction } from "../features/invoice/invoiceSlice";
-import { Notification, Modal, Alert, Container, Button } from "@mantine/core";
-import { IconCheck, IconX, IconAlertCircle } from "@tabler/icons-react";
+import { Modal, Alert, Container, Button } from "@mantine/core";
+import { IconAlertCircle } from "@tabler/icons-react";
 import useToggleSuccessFailedModal from "../app/hookFiles/useToggleSuccessFailedModal";
 import companyLogo from "../assets/images/logo-dark-notext.png";
 import onBoardingImage from "../assets/images/OnboardingImage.png";
 import { useNavigate } from "react-router-dom";
 
-const MainContent = lazy(() => import("../components/MainContent"));
-
 const Home = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { patient, verificationCode } = useAppSelector((state) => state.auth);
-
   const [visibleSuccess, visibleFailed, toggleModalSuccess, toggleModalFailed] =
     useToggleSuccessFailedModal();
-  // const handleLogin = async () => {
-  //   dispatch(login());
-  //   ToastNotify("Successfully logged in");
-  // };
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const tranRef = queryParams.get("tranRef");
-    const refer = queryParams.get("ref");
-    const order_reference_id = queryParams.get("order_reference_id");
-    const order_id = queryParams.get("order_id");
+    const payment = queryParams.get("payment");
 
-    if (refer)// && order_reference_id && order_id && tranRef)
-      dispatch(
-        verifyPaymentAction({
-          tranRef,
-          order_reference_id,
-          order_id,
-          ref: refer,
-          toggleModalSuccess, toggleModalFailed,
-          navigate,
-        }),
-      );
+    if (payment === "successful") {
+      toggleModalSuccess();
+      setTimeout(() => {
+        navigate("/invoice");
+      }, 3000);
+    } else if (payment === "failed") toggleModalFailed();
   }, []);
 
   return (
@@ -51,7 +28,7 @@ const Home = () => {
       <Modal
         withCloseButton={false}
         opened={visibleSuccess as boolean}
-        onClose={toggleModalSuccess as () => void}
+        onClose={toggleModalSuccess}
         padding={0}
       >
         <Alert
@@ -59,7 +36,9 @@ const Home = () => {
           title="! مبروك"
           color="green"
         >
-          <p className="">لقد تم دفع الفاتورة بنجاح سيتم ارسال رسالة التأكيد.</p>
+          <p className="">
+            لقد تم دفع الفاتورة بنجاح سيتم ارسال رسالة التأكيد.
+          </p>
           <p className="">لاتنس تحميل التطبيق.</p>
         </Alert>
       </Modal>
@@ -74,7 +53,7 @@ const Home = () => {
           title="! حدث خطاء ما"
           color="red"
         >
-          <p>لم يتم دفع الفاتورة</p>
+          <p>لم يتم دفع الفاتورة. يمكنك تسجيل الدخول و المحاولة مرة اخرى</p>
         </Alert>
       </Modal>
       {/* <button onClick={toggleModalFailed as () => void}>sdasdsad</button> */}
@@ -92,8 +71,11 @@ const Home = () => {
 
         <div className="flex justify-center flex-col items-start mb-2 w-full">
           <p className="text-xs">
-            يقدم لك إثنين جلسات تثقيفية ومراقبة ومتابعة مع مدربين متخصصين في مرض
-            السكري
+            حيا الله مُصاب السكري حبيبنا ، تطبيق اثنين ساعد ١٢ ألف مصاب مثل
+            حالتك.، راح نساعدك وأنت في بيتك اوصل لنتائج تحاليل ممتازة مع السكري
+            وتتخطى التحديات والمخاوف الي تواجهك
+            {/* يقدم لك إثنين جلسات تثقيفية ومراقبة ومتابعة مع مدربين متخصصين في مرض
+            السكري */}
             {/* <p className="text-xs">حيا الله مصاب السكري حبيبنا ,أمراض السكري متعددة ومنتشرة في كل ارجاء مملكتنا الحبيبة , تطبيق ااثنين درب وساعد 12000 مُصاب على ضبط السكري ايش ماكان النوع او العلاج
  راح نساعدك وانت في بيتك تحافظ على تحاليل سكر ممتازة وبكل سهولة
 راح تحصل مثقفين سكري واخصائيين تغذية واطباء سكري واخصائيين نفسيين سعوديين يساعدونك تتخطى كل تحدياتك مع السكري */}

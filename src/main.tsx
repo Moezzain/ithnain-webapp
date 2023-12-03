@@ -19,9 +19,11 @@ const rtlCache = createEmotionCache({
 
 const Users = lazy(() => import("./routes/Users"));
 const Home = lazy(() => import("./routes/Home"));
-const Invoice = lazy(() => import("./routes/invoice"));
+const Invoice = lazy(() => import("./routes/Invoice"));
 const SignUp = lazy(() => import("./routes/signUp"));
 const ChoosePlan = lazy(() => import("./routes/choosePlan"));
+const SignUpDoctor = lazy(() => import("./routes/signUpDoctor"));
+const ChoosePlanDoctor = lazy(() => import("./routes/choosePlanDoctor"));
 const ErrorPage = lazy(() => import("./routes/ErrorPage"));
 
 const router = createBrowserRouter([
@@ -39,6 +41,10 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
+        path: "/signupdoctor",
+        element: <SignUpDoctor />,
+      },
+      {
         path: "/otp",
         element: <OtpPage />,
       },
@@ -49,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/choosePlan",
         element: <ChoosePlan />,
+      },
+      {
+        path: "/choosePlanDoctor",
+        element: <ChoosePlanDoctor />,
       },
       {
         path: "users",

@@ -1,7 +1,4 @@
-import { useCallback, useState } from "react";
-
 let visible = false;
-// const [visible, setVisible] = useState(false);
 
 const useToggleOverlay: any = () => {
   const toggleOverlay = () => {
