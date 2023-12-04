@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useEffect, useRef, useState } from "react";
 import {
   createPatientAction,
+  setSuccessAuthAction,
   verifyPhoneAction,
 } from "../features/auth/authSlice";
 import { convertArabicNumerals } from "../app/helpers";
@@ -31,6 +32,8 @@ function OtpPage() {
   const finishEnterCode = (value: string) => {
     if (convertArabicNumerals(value) === verificationCode) {
       setIncorrectCode(false);
+      // dispatch isAuth method
+      dispatch(setSuccessAuthAction());
       if (!state.signUp) {
         // forward to plans page
         if (!patient.email) {

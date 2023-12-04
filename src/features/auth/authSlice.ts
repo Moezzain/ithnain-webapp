@@ -146,6 +146,9 @@ export const authSlice = createSlice({
     setTokenAction: (state, action) => {
       state.token = action.payload;
     },
+    setSuccessAuthAction: (state) => {
+      state.isAuth = true;
+    },
     setLoadingAction: (state, action) => {
       state.loadingPatientExist = action.payload;
     },
@@ -208,6 +211,10 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setUserIdAction, setTokenAction, setLoadingAction } =
-  authSlice.actions;
+export const {
+  setUserIdAction,
+  setTokenAction,
+  setLoadingAction,
+  setSuccessAuthAction,
+} = authSlice.actions;
 export default authSlice.reducer;

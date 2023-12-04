@@ -45,7 +45,9 @@ const Invoice = () => {
       navigate("/");
     } else {
       // hubspot link
-      window.location.replace('https://meetings-eu1.hubspot.com/meetings/moez-babiker/patientstatus');
+      window.location.replace(
+        "https://meetings-eu1.hubspot.com/meetings/moez-babiker/patientstatus",
+      );
     }
   };
 

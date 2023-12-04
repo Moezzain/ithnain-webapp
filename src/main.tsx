@@ -50,15 +50,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/invoice",
-        element: <Invoice />,
+        element: (
+          <Protected>
+            <Invoice />
+          </Protected>
+        ),
       },
       {
         path: "/choosePlan",
-        element: <ChoosePlan />,
+        element: (
+          <Protected>
+            <ChoosePlan />
+          </Protected>
+        ),
       },
       {
         path: "/chooseDoctorPlan",
-        element: <ChoosePlanDoctor />,
+        element: (
+          <Protected>
+            <ChoosePlanDoctor />
+          </Protected>
+        ),
       },
       {
         path: "users",
