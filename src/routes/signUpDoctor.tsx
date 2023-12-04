@@ -24,34 +24,32 @@ const SignUpDoctor = () => {
 
   const form = useForm({
     initialValues: {
+      name: "",
       email: "",
       phone: "",
       termsOfService: false,
     },
     validate: {
-      email: (value) => (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? null : "أدخل أيميل صحيح"),
+      name: (value) => (/^(?!\s*$).+/.test(value) ? null : "أدخل اسم صحيح"),
+      email: (value) =>
+        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)
+          ? null
+          : "أدخل أيميل صحيح",
       phone: (value) =>
         /^[\u0660-\u0669]|[0-9]{9}$/.test(value) ? null : "أدخل رقم هاتف صحيح",
       termsOfService: (value) => (value ? null : "وافق على الاحكام و الشروط"),
     },
   });
 
-  const onSubmit = (values: { email: string; phone: string }) => {
+  const onSubmit = (values: { name: string; email: string; phone: string }) => {
     // check exist or not
-    console.log("convertArabicNumerals(values.phone)");
-    console.log(convertArabicNumerals(values.phone));
     dispatch(
       isPatientExistAction({
-        name: '',
         ...values,
         navigate,
         phone: convertArabicNumerals(values.phone),
       }),
     );
-    // if exist false already have an account and forward to payment page
-    // if not send message and forward to code page
-    // console.log(values);
-    // navigate(`/otp`);
   };
 
   return (
@@ -63,13 +61,19 @@ const SignUpDoctor = () => {
           fontWeight: 900,
         })}
       >
-        الرجاء تسجيل الدخول
+        الرجاء التسجيل لحجز موعد مع الطبيب
       </Title>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <Box maw={320} mx="auto" className="flex flex-col">
           <img src={companyLogo} alt="company logo" className="w-32" />
           <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+            <TextInput
+              label="الأسم"
+              mt="md"
+              placeholder="الأسم"
+              {...form.getInputProps("name")}
+            />
             <TextInput
               label="الأيميل"
               mt="md"

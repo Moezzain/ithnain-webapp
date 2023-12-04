@@ -32,24 +32,12 @@ const SignUp = () => {
       name: (value) => (/^(?!\s*$).+/.test(value) ? null : "أدخل اسم صحيح"),
       phone: (value) =>
         /^[\u0660-\u0669]|[0-9]{9}$/.test(value) ? null : "أدخل رقم هاتف صحيح",
-
-      // phone: (value) => {
-      //   if(!(/^\d{9}$/.test(value))) {
-      //     return "أدخل رقم هاتف صحيح";
-      //   }
-      //   if(!(/^[\u0660-\u0669]{9}$/.test(value))) {
-      //     return "أدخل رقم هاتف صحيح";
-      //   }
-      //   return null;
-      // },
       termsOfService: (value) => (value ? null : "وافق على الاحكام و الشروط"),
     },
   });
 
   const onSubmit = (values: { name: string; phone: string }) => {
     // check exist or not
-    console.log("convertArabicNumerals(values.phone)");
-    console.log(convertArabicNumerals(values.phone));
     dispatch(
       isPatientExistAction({
         ...values,
@@ -57,10 +45,6 @@ const SignUp = () => {
         phone: convertArabicNumerals(values.phone),
       }),
     );
-    // if exist false already have an account and forward to payment page
-    // if not send message and forward to code page
-    // console.log(values);
-    // navigate(`/otp`);
   };
 
   return (

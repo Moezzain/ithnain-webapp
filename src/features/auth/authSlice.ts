@@ -25,39 +25,34 @@ const initialState: AuthState = {
 export const isPatientExistAction = createAsyncThunk(
   "auth/isExist",
   async (
-    { name, email, phone, navigate }: { name: string; email?: string; phone: string; navigate: any },
+    {
+      name,
+      email,
+      phone,
+      navigate,
+    }: { name: string; email?: string; phone: string; navigate: any },
     { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await api.post("/isExist", { phoneNumber: phone });
-
-      console.log("response");
-      console.log(response);
-
       if (!response) {
         return rejectWithValue("");
       }
       if (response?.status === 201 || response?.status === 404) {
-        console.log("inside1");
-
         if (response?.data.patient) {
-          console.log("inside3");
-          if (name || email) {
-            // sendOtp and go to otp page
-            dispatch(verifyPhoneAction({ name, phone }));
-            navigate(`/otp`, { state: { signUp: false } });
-          }
-          return {...response?.data.patient, email};
+          // sendOtp and go to otp page
+          dispatch(verifyPhoneAction({ name, phone }));
+          navigate(`/otp`, { state: { signUp: false } });
+          return { ...response?.data.patient, email };
         } else if (response?.data.error) {
           // send otp with paramter sign up
-          console.log("inside2");
-
           dispatch(verifyPhoneAction({ name, phone }));
           navigate(`/otp`, { state: { signUp: true } });
           return {
             error: response?.data.error,
             signUp: true,
             patientName: name,
+            email,
             patientPhone: "+966" + phone,
           };
         }
@@ -96,7 +91,7 @@ export const createPatientAction = createAsyncThunk(
     { rejectWithValue, dispatch },
   ) => {
     const response = await api.post("/patient", {
-      name: email? email: name,
+      name: email ? email : name,
       phone,
       referralCode,
       referralMedium: "Web Portal",
@@ -111,10 +106,9 @@ export const createPatientAction = createAsyncThunk(
       const patient = JSON.parse(unparsedPatient);
       dispatch(setUserIdAction(patient.id));
       dispatch(setTokenAction(patient.token));
-      if(!email || email === '')
-        navigate("/choosePlan");
+      if (!email || email === "") navigate("/choosePlan");
       else navigate("/chooseDoctorPlan");
-      return { patient: {...patient, email}, isExisting };
+      return { patient: { ...patient, email }, isExisting };
     }
     return rejectWithValue(response?.data?.statusText);
   },
@@ -124,16 +118,11 @@ export const setSignUpStatusAction = createAsyncThunk(
   "auth/setSignUpStatus",
   async (signUpStatus: string, thunkApi) => {
     try {
-      console.log("insideee logg");
       const { auth } = thunkApi.getState() as RootState;
-      console.log("signUpStatus");
-      console.log(signUpStatus);
       const response = await api.patch("/patient", {
         patientId: auth.patient.id,
         signUpStatus,
       });
-      console.log("response");
-      console.log(response);
       if (response?.status === 201) {
         return signUpStatus;
       } else {

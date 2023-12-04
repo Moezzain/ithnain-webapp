@@ -16,7 +16,6 @@ function TamaraPayment({
   const [error, setError] = useState("");
 
   const onChange = (value: string) => {
-    console.log(value);
     setValue(value);
     setError("");
   };

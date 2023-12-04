@@ -39,15 +39,15 @@ const Invoice = () => {
       })
       .catch((error) => console.log(error));
   };
-  
+
   const done = () => {
-    if(!patient.email || patient.email === '') {
+    if (!patient.email || patient.email === "") {
       navigate("/");
-    }
-    else {
+    } else {
       // hubspot link
+      window.location.replace('https://meetings-eu1.hubspot.com/meetings/moez-babiker/patientstatus');
     }
-  }
+  };
 
   return (
     <>

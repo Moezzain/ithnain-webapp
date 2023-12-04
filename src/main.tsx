@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         element: <ChoosePlan />,
       },
       {
-        path: "/choosePlanDoctor",
+        path: "/chooseDoctorPlan",
         element: <ChoosePlanDoctor />,
       },
       {

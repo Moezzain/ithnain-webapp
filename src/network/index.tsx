@@ -6,9 +6,6 @@ const IBconfig = import.meta.env;
 export class IbApi {
   private readonly instance: AxiosInstance;
   constructor() {
-    console.log("IBconfig");
-    console.log(IBconfig);
-
     this.instance = axios.create({
       baseURL: IBconfig.VITE_url,
       timeout: 10000,

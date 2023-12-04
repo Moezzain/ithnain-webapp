@@ -33,10 +33,9 @@ function OtpPage() {
       setIncorrectCode(false);
       if (!state.signUp) {
         // forward to plans page
-        if(!patient.email) {
+        if (!patient.email) {
           navigate("/choosePlan");
-        }
-        else {
+        } else {
           navigate("/chooseDoctorPlan");
         }
       } else {
@@ -88,8 +87,6 @@ function OtpPage() {
       const distance: any = countDown - now;
       currentMinutes = Math.floor((distance % hour) / minute);
       currentSeconds = Math.floor((distance % minute) / second);
-      console.log("currentSeconds");
-      console.log(currentSeconds);
 
       if (currentSeconds < 10) {
         currentSeconds = `0${currentSeconds}`;

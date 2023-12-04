@@ -65,9 +65,11 @@ const ChoosePlanDoctor = () => {
 
         <div className="flex justify-center flex-col items-start mb-2 w-full">
           <p className="text-base mb-4">
-            لتحديد خطتك داخل التطبيق جاوب على السؤال:
+            لتحديد باقتك مع الطبيب جاوب على السؤال:
           </p>
-          <p className="text-base">هل أنت مصاب بالسكري النوع الاول او الثاني؟</p>
+          <p className="text-base">
+            هل أنت مصاب بالسكري النوع الاول او الثاني؟
+          </p>
           <Radio.Group
             value={insulin}
             onChange={chooseInsuline}

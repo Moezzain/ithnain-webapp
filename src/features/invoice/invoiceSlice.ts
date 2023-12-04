@@ -28,8 +28,6 @@ export const createInvoiceAction = createAsyncThunk(
     try {
       const { auth } = thunkApi.getState() as RootState;
       const IBconfig = import.meta.env;
-      console.log("auth");
-      console.log(auth.patient.id);
 
       const response = await api.post(`/invoices`, {
         patientId: auth.patient.id,
@@ -44,8 +42,6 @@ export const createInvoiceAction = createAsyncThunk(
         return thunkApi.rejectWithValue("Server error");
       }
       if (response?.status === 201) {
-        console.log("response createInvoiceAction \n");
-        console.log(response);
         const invoice = JSON.parse(response.data.invoice);
         // send get URL by dispatching invoice details to getInvoiceUrlAction
         thunkApi.dispatch(setInvoiceIdAction(invoice.id));
