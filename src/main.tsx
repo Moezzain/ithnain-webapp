@@ -37,6 +37,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/jwharjiReferral",
+        element: <Home />,
+      },
+      {
         path: "/signup",
         element: <SignUp />,
       },

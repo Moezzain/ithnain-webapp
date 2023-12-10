@@ -1,8 +1,15 @@
-import { Button, Container, Radio } from "@mantine/core";
+import {
+  Card,
+  Button,
+  Container,
+  Image,
+  Text,
+  Badge,
+  Group,
+} from "@mantine/core";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import companyLogo from "../assets/images/logo-dark-notext.png";
-import MainPlan from "../assets/images/7sessionspromo.jpg";
-import IntensivePlan from "../assets/images/12sessionspromo.jpg";
+import DrPhoto from "../assets/images/DrPhoto.jpg";
 import { useState } from "react";
 import { setLoadingAction } from "../features/auth/authSlice";
 import { createInvoiceAction } from "../features/invoice/invoiceSlice";
@@ -56,17 +63,19 @@ const ChoosePlanDoctor = () => {
         my={10}
         className="flex justify-center flex-col items-start"
       >
-        <img src={companyLogo} alt="company logo" className="w-32 mt-10" />
+        <div className="flex flex-row items-center justify-around my-2">
+          <img src={DrPhoto} alt="company logo" className=" w-1/3" />
+          <img src={companyLogo} alt="company logo" className="w-32 mt-10" />
+        </div>
         <div className="flex justify-center flex-col items-center my-2">
-          <p style={{ color: "#042C43" }} className=" text-3xl my-6">
+          <p style={{ color: "#042C43" }} className=" text-2xl my-6">
             مرحبا {patient?.name}
           </p>
         </div>
 
         <div className="flex justify-center flex-col items-start mb-2 w-full">
-          <p className="text-base mb-4">
-            لتحديد باقتك مع الطبيب جاوب على السؤال:
-          </p>
+          <p className="text-base mb-4">حدد نوع الموعد مع الطبيب:</p>
+          {/* 
           <p className="text-base">
             هل أنت مصاب بالسكري النوع الاول او الثاني؟
           </p>
@@ -77,92 +86,93 @@ const ChoosePlanDoctor = () => {
           >
             <Radio value="Yes" label="الأول" />
             <Radio value="No" label="الثاني" />
-          </Radio.Group>
+          </Radio.Group> */}
 
-          {insulin !== "" && (
-            <div className="flex justify-start flex-col items-center w-full">
-              {insulin === "No" ? (
-                <>
-                  <p className="text-base mb-4">خطة {plans[1].name} بقيمة:</p>
-                  <p className="text-base mb-4 text-blue-950">
-                    {plans[1].amount} ريال
-                  </p>
-                  {/* <img
-                    src={IntensivePlan}
-                    alt="Intensive Plan"
-                    className=" w-80 mb-5"
-                  /> */}
+          <Card shadow="sm" padding="lg" radius="md" m="lg" withBorder>
+            <Card.Section></Card.Section>
 
-                  <Button
-                    onClick={() =>
-                      dispatch(
-                        createInvoiceAction({
-                          intensityId: plans[1].intensityId,
-                          description: plans[1].description,
-                        }),
-                      )
-                    }
-                    variant="outline"
-                    styles={(theme) => ({
-                      root: {
-                        backgroundColor: "#eb4063",
-                        borderColor: "#eb4063",
-                        color: "white",
-                        borderRadius: 17,
-                        "&:not([data-disabled])": theme.fn.hover({
-                          backgroundColor: "#eb4063",
-                        }),
-                      },
-                    })}
-                  >
-                    واصل للدفع (٤٨٠ ريال)
-                  </Button>
-                  <TamaraPayment
-                    value={value}
-                    setValue={setValue}
-                    createPayment={payWithTamara}
-                  />
-                </>
-              ) : (
-                <>
-                  {/* <img src={MainPlan} alt="Main Plan" className=" w-80 mb-5" /> */}
-                  <p className="text-base mb-4">خطة {plans[0].name} بقيمة:</p>
-                  <p className="text-base mb-4 text-blue-950">
-                    {plans[0].amount} ريال
-                  </p>
-                  <Button
-                    onClick={() =>
-                      dispatch(
-                        createInvoiceAction({
-                          intensityId: plans[0].intensityId,
-                          description: plans[0].description,
-                        }),
-                      )
-                    }
-                    variant="outline"
-                    styles={(theme) => ({
-                      root: {
-                        backgroundColor: "#eb4063",
-                        borderColor: "#eb4063",
-                        color: "white",
-                        borderRadius: 17,
-                        "&:not([data-disabled])": theme.fn.hover({
-                          backgroundColor: "#eb4063",
-                        }),
-                      },
-                    })}
-                  >
-                    واصل للدفع (٢٨٠ ريال)
-                  </Button>{" "}
-                  <TamaraPayment
-                    value={value}
-                    setValue={setValue}
-                    createPayment={payWithTamara}
-                  />
-                </>
-              )}
+            <Group position="apart" mt="md" mb="xs">
+              <Text weight={500}>الباقة الاولى</Text>
+              <Badge color="pink" variant="light">
+                تخفيض ٢٠٪{" "}
+              </Badge>
+            </Group>
+
+            <Text size="sm" color="dimmed">
+              حجز جلسة مع د جوهرجي بقيمة ٢٨٠ ريال
+            </Text>
+
+            <div className="flex justify-center flex-col items-center mb-2 w-full">
+              <Button
+                mt="md"
+                onClick={() =>
+                  dispatch(
+                    createInvoiceAction({
+                      intensityId: plans[0].intensityId,
+                      description: plans[0].description,
+                    }),
+                  )
+                }
+                variant="outline"
+                styles={(theme) => ({
+                  root: {
+                    backgroundColor: "#eb4063",
+                    borderColor: "#eb4063",
+                    color: "white",
+                    borderRadius: 17,
+                    "&:not([data-disabled])": theme.fn.hover({
+                      backgroundColor: "#eb4063",
+                    }),
+                  },
+                })}
+              >
+                أدفع الان
+              </Button>
             </div>
-          )}
+          </Card>
+
+          <Card shadow="sm" padding="lg" radius="md" m="lg" withBorder>
+            <Card.Section></Card.Section>
+
+            <Group position="apart" mt="md" mb="xs">
+              <Text weight={500}>الباقة الثانية</Text>
+              <Badge color="pink" variant="light">
+                تخفيض ٢٠٪
+              </Badge>
+            </Group>
+
+            <Text size="sm" color="dimmed">
+              حجز جلسة مع د جوهرجي بقيمة ٤٨٠ ريال
+            </Text>
+
+            <div className="flex justify-center flex-col items-center mb-2 w-full">
+              <Button
+                mt="md"
+                onClick={() =>
+                  dispatch(
+                    createInvoiceAction({
+                      intensityId: plans[1].intensityId,
+                      description: plans[1].description,
+                    }),
+                  )
+                }
+                variant="outline"
+                styles={(theme) => ({
+                  root: {
+                    backgroundColor: "#eb4063",
+                    borderColor: "#eb4063",
+                    color: "white",
+                    borderRadius: 17,
+                    "&:not([data-disabled])": theme.fn.hover({
+                      backgroundColor: "#eb4063",
+                    }),
+                  },
+                })}
+              >
+                أدفع الان
+              </Button>
+            </div>
+          </Card>
         </div>
       </Container>
     </div>
