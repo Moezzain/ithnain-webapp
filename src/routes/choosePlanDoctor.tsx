@@ -17,13 +17,13 @@ import TamaraPayment from "../components/Tamara";
 
 const plans = [
   {
-    intensityId: "6be7094b-e4eb-436c-a837-4f5c38013869",
+    intensityId: "28eebf72-dfa1-41f8-953a-af6115730a88",
     description: "من الموقع",
     name: "السبع جلسات",
     amount: "280",
   },
   {
-    intensityId: "2f397364-ca4e-4a7b-8511-3b2e816d0a9e",
+    intensityId: "377ba20e-7969-436c-a097-36d947259a30",
     description: "من الموقع",
     name: "الأثنا عشر جلسة",
     amount: "480",
@@ -69,7 +69,7 @@ const ChoosePlanDoctor = () => {
         </div>
         <div className="flex justify-center flex-col items-center my-2">
           <p style={{ color: "#042C43" }} className=" text-2xl my-6">
-            مرحبا {patient?.name}
+            مرحبا {patient?.name.replace("(جوهرجي)", "")}
           </p>
         </div>
 

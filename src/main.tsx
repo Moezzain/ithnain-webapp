@@ -19,6 +19,7 @@ const rtlCache = createEmotionCache({
 
 const Users = lazy(() => import("./routes/Users"));
 const Home = lazy(() => import("./routes/Home"));
+const HomeDoctor = lazy(() => import("./routes/HomeDoctor"));
 const Invoice = lazy(() => import("./routes/Invoice"));
 const SignUp = lazy(() => import("./routes/signUp"));
 const ChoosePlan = lazy(() => import("./routes/choosePlan"));
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/jwharjiReferral",
-        element: <Home />,
+        element: <HomeDoctor />,
       },
       {
         path: "/signup",

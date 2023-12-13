@@ -75,7 +75,8 @@ export const getInvoiceAction = createAsyncThunk(
         return thunkApi.rejectWithValue(response.data.error);
       } else if (response.data?.status === "successful") {
         //forward patient to url page response.data.invoiceUrl
-        thunkApi.dispatch(setSignUpStatusAction("needCoach"));
+        if (!auth.patient.email)
+          thunkApi.dispatch(setSignUpStatusAction("needCoach"));
         return response.data;
       }
     } catch (error: any) {

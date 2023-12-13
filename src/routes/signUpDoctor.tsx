@@ -14,14 +14,22 @@ import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
 import companyLogo from "../assets/images/logo-dark-notext.png";
 import { useAppDispatch } from "../app/hooks";
-import { isPatientExistAction } from "../features/auth/authSlice";
+import {
+  clearAuthAction,
+  isPatientExistAction,
+} from "../features/auth/authSlice";
 import { convertArabicNumerals } from "../app/helpers";
+import { useEffect } from "react";
 
 const SignUpDoctor = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
 
+  useEffect(() => {
+    // clear persistent data
+    dispatch(clearAuthAction());
+  }, []);
   const form = useForm({
     initialValues: {
       name: "",

@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { Modal, Alert, Container, Button } from "@mantine/core";
+import { Modal, Alert, Container, Button, Avatar } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
 import useToggleSuccessFailedModal from "../app/hookFiles/useToggleSuccessFailedModal";
 import companyLogo from "../assets/images/logo-dark-notext.png";
 import onBoardingImage from "../assets/images/OnboardingImage.png";
+import DrPhoto from "../assets/images/DrPhoto.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -61,12 +62,18 @@ const Home = () => {
       <Container
         size={520}
         my={10}
-        className="flex justify-center flex-col items-start"
+        className="flex justify-center flex-col items-center !mt-10"
       >
-        <img src={onBoardingImage} alt="company logo" className="w-full" />
-        <img src={companyLogo} alt="company logo" className="w-32" />
         <div className="flex justify-center flex-col items-center my-2">
-          <h5>تطبيق السكري الخاص بك</h5>
+          <p className="text-2xl"> قم بحجز موعد مع د. جوهرجي </p>
+        </div>
+        <div className="flex flex-row items-center justify-around my-2">
+          <img src={DrPhoto} alt="company logo" className=" w-1/3" />
+          {/* <Avatar src={DrPhoto} alt="it's me" radius="xl" /> */}
+          <img src={companyLogo} alt="company logo" className="w-32" />
+        </div>
+        <div className="flex justify-start flex-col items-right my-2 w-full">
+          <h5> د. جوهرجي بالأشتراك مع تطبيق أثنين </h5>
         </div>
 
         <div className="flex justify-center flex-col items-start mb-2 w-full">
@@ -82,7 +89,7 @@ const Home = () => {
           </p>
           <div className="flex justify-center flex-row items-start mt-12 w-full">
             <Button
-              onClick={() => navigate("/signUp")}
+              onClick={() => navigate("/signupdoctor")}
               variant="outline"
               styles={(theme) => ({
                 root: {

@@ -91,7 +91,7 @@ export const createPatientAction = createAsyncThunk(
     { rejectWithValue, dispatch },
   ) => {
     const response = await api.post("/patient", {
-      name: email ? email : name,
+      name: name + " (جوهرجي)",
       phone,
       referralCode,
       referralMedium: "Web Portal",
@@ -152,6 +152,7 @@ export const authSlice = createSlice({
     setLoadingAction: (state, action) => {
       state.loadingPatientExist = action.payload;
     },
+    clearAuthAction: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -216,5 +217,6 @@ export const {
   setTokenAction,
   setLoadingAction,
   setSuccessAuthAction,
+  clearAuthAction,
 } = authSlice.actions;
 export default authSlice.reducer;
